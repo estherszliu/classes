@@ -1,10 +1,15 @@
 
 
 import React from "react";
+import PokemonCard from "./PokemonCard";
 
 export default class PokemonTeam extends React.Component {
 	constructor(props){
 		super(props);
+
+		this.state = {
+			pokemonTeam: []
+		}
 	}
 
 
@@ -27,6 +32,14 @@ export default class PokemonTeam extends React.Component {
 		});
 		let data = await response.json();
 		console.log(data.name);
+
+		// Invalid way to update state:
+		// this.state.pokemonTeam.push(data)
+		// Valid way to update state:
+		this.setState({pokemonTeam: [...this.state.pokemonTeam, data]});
+
+		// console.log("UUID example");
+		// console.log(crypto.randomUUID());
 	}
 
 	// Store data from each request
@@ -38,6 +51,11 @@ export default class PokemonTeam extends React.Component {
 		return(
 			<div>
 				<h1>Pokemon data here</h1>
+
+				{this.state.pokemonTeam && this.state.pokemonTeam.map((pokemon, index) => {
+					// return <h1 key={crypto.randomUUID()}>{pokemon.name}</h1>
+					return <PokemonCard key={crypto.randomUUID()} name={pokemon.name} sprite={pokemon.sprites.front_default}/>
+				})}
 			</div>
 		)
 	}
